@@ -99,7 +99,7 @@
         <!-- Post em Destaque (Estático) -->
         <div class="bg-custom-dark-blue-light rounded-2xl overflow-hidden mb-16 flex flex-col md:flex-row shadow-2xl">
             <div class="md:w-1/2">
-                <img src="https://source.unsplash.com/800x600/?barbershop,strategy" alt="Imagem do post em destaque" class="object-cover w-full h-64 md:h-full">
+                <img src="https://source.unsplash.com/featured/800x600/?barbershop,strategy" alt="Imagem do post em destaque" class="object-cover w-full h-64 md:h-full">
             </div>
             <div class="p-8 md:p-12 md:w-1/2 flex flex-col justify-center">
                 <span class="text-custom-gold font-bold text-sm mb-2">DICAS DE GESTÃO</span>
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const closePostModalBtn = document.getElementById('close-modal-btn');
 
     function openPostModal(post) {
-        document.getElementById('modal-img').src = `https://source.unsplash.com/800x600/?${post.imageKeywords}`;
+        document.getElementById('modal-img').src = `https://source.unsplash.com/featured/800x600/?${post.imageKeywords}`;
         document.getElementById('modal-img').alt = `Imagem para o post: ${post.title}`;
         document.getElementById('modal-category').textContent = post.category.toUpperCase();
         document.getElementById('modal-title').textContent = post.title;
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const postElement = document.createElement('div');
             postElement.className = 'bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg flex flex-col';
             postElement.innerHTML = `
-                <img src="https://source.unsplash.com/600x400/?${post.imageKeywords}" alt="Imagem para o post: ${post.title}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                <img src="https://source.unsplash.com/featured/600x400/?${post.imageKeywords}" alt="Imagem para o post: ${post.title}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
                 <div class="p-6 flex flex-col flex-grow">
                     <span class="text-custom-gold font-bold text-sm mb-2 block">${post.category.toUpperCase()}</span>
                     <h3 class="text-xl font-bold mb-3 flex-grow">${post.title}</h3>
