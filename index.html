@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - Laura IA</title>
     <!-- FAVICON -->
-    <link rel="icon" href="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" type="image/png">
+    <link rel="icon" href="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x34.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Ícones (Feather Icons) -->
+    <script src="https://unpkg.com/feather-icons"></script>
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
@@ -25,18 +27,6 @@
         }
         .border-custom-gold {
             border-color: #D4AF37;
-        }
-        .loader {
-            border: 8px solid #f3f3f3;
-            border-top: 8px solid #D4AF37;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 2s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         /* Estilos para o Modal */
         .modal-overlay {
@@ -120,11 +110,12 @@
 
         <!-- Grid de Posts Recentes (será preenchido dinamicamente) -->
         <div id="post-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]">
-            <!-- Loading Spinner -->
-            <div id="loading-spinner" class="col-span-full flex justify-center items-center">
-                <div class="loader"></div>
-            </div>
+            <!-- Conteúdo Estático -->
         </div>
+        <div id="loading-spinner" class="col-span-full flex justify-center items-center" style="display: none;">
+            <div class="loader"></div>
+        </div>
+
 
         <!-- Paginação (Visual) -->
         <div class="flex justify-center mt-16">
@@ -151,6 +142,11 @@
             <p>&copy; 2025 Laura IA. Todos os direitos reservados.</p>
         </div>
     </footer>
+
+    <!-- Botão Widget de Ferramentas -->
+    <button id="tools-widget-btn" class="fixed bottom-6 right-6 bg-custom-gold text-gray-900 w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform">
+        <i data-feather="tool" class="w-8 h-8"></i>
+    </button>
 
     <!-- Modal para Leitura do Post -->
     <div id="post-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 z-50 hidden-modal">
@@ -189,6 +185,55 @@
                 </div>
                 <button type="submit" class="w-full bg-white text-gray-900 font-bold py-3 px-6 rounded-lg text-lg hover:opacity-90 transition-opacity">Iniciar Conversa no WhatsApp</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal de Ferramentas de IA -->
+    <div id="tools-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 z-50 hidden-modal">
+        <div class="modal-content bg-custom-dark-blue-light rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative opacity-0 transform scale-95 p-8">
+            <button id="close-tools-modal-btn" class="absolute top-4 right-4 text-white text-3xl hover:text-custom-gold">&times;</button>
+            <h2 class="text-2xl lg:text-3xl font-bold mb-6 text-center flex items-center justify-center gap-3">
+                <i data-feather="tool" class="w-8 h-8 text-custom-gold"></i>
+                Ferramentas de IA para Barbearias
+            </h2>
+            <div class="space-y-6">
+                <!-- Ferramenta 1: Laura IA -->
+                <div class="bg-gray-900 p-4 rounded-lg flex items-start gap-4">
+                    <img src="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" alt="Logo Laura IA" class="w-12 h-12 rounded-md object-contain bg-white p-1">
+                    <div>
+                        <h3 class="font-bold text-lg">Laura IA (Gestão e Atendimento)</h3>
+                        <p class="text-sm text-gray-400 mt-1 mb-2">Seu agente de IA para automatizar agendamentos, confirmar horários, reativar clientes e gerenciar o clube de fidelidade. Libere seu tempo e nunca mais perca um cliente.</p>
+                        <a href="#" class="contact-trigger text-sm font-bold text-custom-gold hover:underline">Fale com um especialista &rarr;</a>
+                    </div>
+                </div>
+                <!-- Ferramenta 2: Canva -->
+                <div class="bg-gray-900 p-4 rounded-lg flex items-start gap-4">
+                     <img src="https://static.canva.com/static/images/canva_logo_320.svg" alt="Logo Canva" class="w-12 h-12 rounded-md object-contain bg-white p-1">
+                    <div>
+                        <h3 class="font-bold text-lg">Canva Magic Studio (Marketing)</h3>
+                        <p class="text-sm text-gray-400 mt-1 mb-2">Crie posts, stories e vídeos profissionais para o Instagram da sua barbearia em minutos. A IA do Canva sugere layouts, remove fundos de fotos e até escreve textos para suas publicações.</p>
+                        <a href="https://www.canva.com/magic-studio/" target="_blank" class="text-sm font-bold text-custom-gold hover:underline">Acessar Canva &rarr;</a>
+                    </div>
+                </div>
+                <!-- Ferramenta 3: ChatGPT -->
+                 <div class="bg-gray-900 p-4 rounded-lg flex items-start gap-4">
+                     <img src="https://openai.com/favicon.ico" alt="Logo ChatGPT" class="w-12 h-12 rounded-md object-contain bg-white p-1">
+                    <div>
+                        <h3 class="font-bold text-lg">ChatGPT (Ideias e Textos)</h3>
+                        <p class="text-sm text-gray-400 mt-1 mb-2">Precisa de ideias para posts ou legendas criativas? O ChatGPT é um assistente de escrita que pode criar textos para suas campanhas, responder a reviews e gerar ideias de promoções.</p>
+                        <a href="https://chat.openai.com/" target="_blank" class="text-sm font-bold text-custom-gold hover:underline">Usar ChatGPT &rarr;</a>
+                    </div>
+                </div>
+                <!-- Ferramenta 4: Looka -->
+                 <div class="bg-gray-900 p-4 rounded-lg flex items-start gap-4">
+                     <img src="https://looka.com/favicon.ico" alt="Logo Looka" class="w-12 h-12 rounded-md object-contain bg-white p-1">
+                    <div>
+                        <h3 class="font-bold text-lg">Looka (Criação de Marca)</h3>
+                        <p class="text-sm text-gray-400 mt-1 mb-2">Crie um logo profissional e toda a identidade visual da sua barbearia. A IA do Looka gera centenas de opções de design, ajudando a construir uma marca forte e memorável.</p>
+                        <a href="https://looka.com/" target="_blank" class="text-sm font-bold text-custom-gold hover:underline">Criar meu Logo &rarr;</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -248,7 +293,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const contactTriggers = document.querySelectorAll('.contact-trigger');
 
     function openContactModal(e) {
-        e.preventDefault();
+        if (e) e.preventDefault();
         contactModal.classList.remove('hidden-modal');
         setTimeout(() => {
             contactModal.classList.remove('opacity-0');
@@ -285,10 +330,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         contactForm.reset();
     });
 
+    // --- Lógica do Modal de Ferramentas ---
+    const toolsModal = document.getElementById('tools-modal');
+    const toolsModalContent = toolsModal.querySelector('.modal-content');
+    const closeToolsModalBtn = document.getElementById('close-tools-modal-btn');
+    const toolsWidgetBtn = document.getElementById('tools-widget-btn');
+
+    function openToolsModal() {
+        toolsModal.classList.remove('hidden-modal');
+        setTimeout(() => {
+            toolsModal.classList.remove('opacity-0');
+            toolsModalContent.classList.remove('opacity-0', 'scale-95');
+        }, 10);
+        document.body.style.overflow = 'hidden';
+    }
+
+     function closeToolsModal() {
+        toolsModal.classList.add('opacity-0');
+        toolsModalContent.classList.add('opacity-0', 'scale-95');
+        setTimeout(() => {
+            toolsModal.classList.add('hidden-modal');
+            document.body.style.overflow = 'auto';
+        }, 300);
+    }
+    
+    toolsWidgetBtn.addEventListener('click', openToolsModal);
+    closeToolsModalBtn.addEventListener('click', closeToolsModal);
+    toolsModal.addEventListener('click', (e) => { if (e.target === toolsModal) closeToolsModal(); });
+
 
     // --- Lógica de Geração de Posts ---
     function renderPosts(posts) {
-        loadingSpinner.style.display = 'none';
+        // loadingSpinner.style.display = 'none'; // Não é mais necessário com conteúdo estático
         postGrid.innerHTML = ''; 
         posts.forEach(post => {
             const postElement = document.createElement('div');
@@ -304,11 +377,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             postElement.querySelector('.read-more-btn').addEventListener('click', () => openPostModal(post));
             postGrid.appendChild(postElement);
         });
-    }
-
-    function renderError(message) {
-        loadingSpinner.style.display = 'none';
-        postGrid.innerHTML = `<div class="col-span-full text-center text-red-400 text-lg">${message}</div>`;
     }
 
     // Conteúdo estático do blog
@@ -352,6 +420,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     ];
 
     renderPosts(staticPosts);
+    
+    // Inicia os ícones do Feather
+    feather.replace();
 });
 </script>
 
