@@ -12,18 +12,63 @@
         body {
             font-family: 'Montserrat', sans-serif;
         }
-        /* Nova paleta de cores baseada na imagem */
         .bg-custom-dark-blue {
-             background-color: #0d1b2a; /* Azul marinho profundo */
+             background-color: #0d1b2a;
         }
         .bg-custom-dark-blue-light {
-             background-color: #1b263b; /* Tom mais claro para cards */
+             background-color: #1b263b;
         }
         .text-custom-gold {
-            color: #D4AF37; /* Dourado/Ocre */
+            color: #D4AF37;
         }
         .border-custom-gold {
             border-color: #D4AF37;
+        }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #D4AF37;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Estilos para o Modal */
+        .modal-overlay {
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        /* Estilos para o conteúdo do post no modal */
+        #modal-article-content h2 {
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #D4AF37;
+        }
+        #modal-article-content h3 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        #modal-article-content p {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+            color: #d1d5db; /* text-gray-300 */
+        }
+         #modal-article-content ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        #modal-article-content li {
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
@@ -33,7 +78,7 @@
     <header class="py-6 px-4 sm:px-6 lg:px-8">
         <div class="container mx-auto flex justify-between items-center">
             <img src="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" alt="Logo Laura IA" class="h-10 sm:h-12">
-            <a href="#cta-section" class="bg-white text-gray-900 font-bold py-2 px-6 rounded-lg text-sm sm:text-base hover:opacity-90 transition-opacity">Fale Conosco</a>
+            <a href="#" id="fale-conosco-btn-header" class="bg-white text-gray-900 font-bold py-2 px-6 rounded-lg text-sm sm:text-base hover:opacity-90 transition-opacity">Fale Conosco</a>
         </div>
     </header>
 
@@ -45,20 +90,20 @@
             <p class="text-lg sm:text-xl text-gray-300 max-w-3xl mx-auto">Estratégias de gestão, vendas e tecnologia para escalar o seu negócio.</p>
         </div>
 
-        <!-- Post em Destaque -->
+        <!-- Post em Destaque (Estático) -->
         <div class="bg-custom-dark-blue-light rounded-2xl overflow-hidden mb-16 flex flex-col md:flex-row shadow-2xl">
             <div class="md:w-1/2">
-                <img src="https://placehold.co/800x600/1B263B/D4AF37?text=Guia+Definitivo" alt="Imagem do post em destaque" class="object-cover w-full h-64 md:h-full">
+                <img src="https://source.unsplash.com/800x600/?barbershop,strategy" alt="Imagem do post em destaque" class="object-cover w-full h-64 md:h-full">
             </div>
             <div class="p-8 md:p-12 md:w-1/2 flex flex-col justify-center">
                 <span class="text-custom-gold font-bold text-sm mb-2">DICAS DE GESTÃO</span>
                 <h2 class="text-3xl lg:text-4xl font-bold mb-4">O Guia Definitivo para Barbearias Lucrativas: 5 Estratégias para Aumentar seu Faturamento</h2>
                 <p class="text-gray-300 mb-6">Descubra as 5 táticas que donos de barbearias de sucesso usam para lotar a agenda e aumentar o lucro, mesmo em mercados competitivos.</p>
-                <a href="#" class="text-custom-gold font-bold hover:underline">Leia o artigo completo &rarr;</a>
+                <a href="#" id="featured-post-link" class="text-custom-gold font-bold hover:underline">Leia o artigo completo &rarr;</a>
             </div>
         </div>
 
-        <!-- Filtros de Categoria -->
+        <!-- Filtros de Categoria (Funcionalidade visual) -->
         <div class="flex justify-center flex-wrap gap-2 sm:gap-4 mb-12">
             <button class="bg-white text-gray-900 font-bold py-2 px-5 rounded-full">Todos</button>
             <button class="bg-custom-dark-blue-light hover:bg-gray-700 font-bold py-2 px-5 rounded-full transition-colors">Gestão</button>
@@ -67,89 +112,20 @@
             <button class="bg-custom-dark-blue-light hover:bg-gray-700 font-bold py-2 px-5 rounded-full transition-colors">Cases de Sucesso</button>
         </div>
 
-        <!-- Grid de Posts Recentes -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-            <!-- NOVO POST ADICIONADO AQUI -->
-            <div class="bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg">
-                <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Novo+Artigo" alt="Imagem do post" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                <div class="p-6">
-                    <span class="text-custom-gold font-bold text-sm mb-2 block">NOVA CATEGORIA</span>
-                    <h3 class="text-xl font-bold mb-3 h-20">Título do Seu Novo Artigo Incrível</h3>
-                    <a href="#" class="font-bold text-white hover:text-custom-gold transition-colors">Ler mais &rarr;</a>
-                </div>
+        <!-- Grid de Posts Recentes (será preenchido dinamicamente) -->
+        <div id="post-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]">
+            <!-- Loading Spinner -->
+            <div id="loading-spinner" class="col-span-full flex justify-center items-center">
+                <div class="loader"></div>
             </div>
-
-            <!-- Post Card 1 -->
-            <div class="bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg">
-                <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Kit+Marketing" alt="Imagem do post" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                <div class="p-6">
-                    <span class="text-custom-gold font-bold text-sm mb-2 block">MARKETING E VENDAS</span>
-                    <h3 class="text-xl font-bold mb-3 h-20">Kit de Marketing para Barbearias: 5 Templates Prontos para Lotar sua Agenda</h3>
-                    <a href="#" class="font-bold text-white hover:text-custom-gold transition-colors">Ler mais &rarr;</a>
-                </div>
-            </div>
-
-            <!-- Post Card 2 -->
-            <div class="bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg">
-                <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=IA+no+WhatsApp" alt="Imagem do post" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                <div class="p-6">
-                    <span class="text-custom-gold font-bold text-sm mb-2 block">TECNOLOGIA E IA</span>
-                    <h3 class="text-xl font-bold mb-3 h-20">Inteligência Artificial no WhatsApp: É o Fim do Atendimento Humano?</h3>
-                    <a href="#" class="font-bold text-white hover:text-custom-gold transition-colors">Ler mais &rarr;</a>
-                </div>
-            </div>
-
-            <!-- Post Card 3 -->
-            <div class="bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg">
-                <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Case+de+Sucesso" alt="Imagem do post" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                <div class="p-6">
-                    <span class="text-custom-gold font-bold text-sm mb-2 block">CASES DE SUCESSO</span>
-                    <h3 class="text-xl font-bold mb-3 h-20">Como a Barbearia Império VIP Aumentou em 35% os Agendamentos com a Laura IA</h3>
-                    <a href="#" class="font-bold text-white hover:text-custom-gold transition-colors">Ler mais &rarr;</a>
-                </div>
-            </div>
-
-             <!-- Post Card 4 -->
-            <div class="bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg">
-                <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Recupera%C3%A7%C3%A3o" alt="Imagem do post" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                <div class="p-6">
-                    <span class="text-custom-gold font-bold text-sm mb-2 block">MARKETING E VENDAS</span>
-                    <h3 class="text-xl font-bold mb-3 h-20">Carrinhos Abandonados? 3 Scripts de Mensagem para Recuperar Vendas no E-commerce</h3>
-                    <a href="#" class="font-bold text-white hover:text-custom-gold transition-colors">Ler mais &rarr;</a>
-                </div>
-            </div>
-
-             <!-- Post Card 5 -->
-            <div class="bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg">
-                <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Qualifica%C3%A7%C3%A3o" alt="Imagem do post" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                <div class="p-6">
-                    <span class="text-custom-gold font-bold text-sm mb-2 block">GESTÃO</span>
-                    <h3 class="text-xl font-bold mb-3 h-20">Pare de Perder Tempo: Como Qualificar Leads de Imóveis 24/7 com IA</h3>
-                    <a href="#" class="font-bold text-white hover:text-custom-gold transition-colors">Ler mais &rarr;</a>
-                </div>
-            </div>
-
-             <!-- Post Card 6 -->
-            <div class="bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg">
-                <img src="https://placehold.co/600x400/1B263B/FFFFFF?text=Futuro+do+Atendimento" alt="Imagem do post" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-                <div class="p-6">
-                    <span class="text-custom-gold font-bold text-sm mb-2 block">TECNOLOGIA E IA</span>
-                    <h3 class="text-xl font-bold mb-3 h-20">Análise de Sentimento: Como a IA Entende a Emoção do seu Cliente e Aumenta a Satisfação</h3>
-                    <a href="#" class="font-bold text-white hover:text-custom-gold transition-colors">Ler mais &rarr;</a>
-                </div>
-            </div>
-
         </div>
 
-        <!-- Paginação -->
+        <!-- Paginação (Visual) -->
         <div class="flex justify-center mt-16">
             <nav class="flex items-center gap-2">
                 <span class="bg-white text-gray-900 font-bold py-2 px-4 rounded-lg">1</span>
                 <a href="#" class="bg-custom-dark-blue-light hover:bg-gray-700 font-bold py-2 px-4 rounded-lg transition-colors">2</a>
                 <a href="#" class="bg-custom-dark-blue-light hover:bg-gray-700 font-bold py-2 px-4 rounded-lg transition-colors">3</a>
-                <span class="text-gray-500">...</span>
-                <a href="#" class="bg-custom-dark-blue-light hover:bg-gray-700 font-bold py-2 px-4 rounded-lg transition-colors">Próximo &rarr;</a>
             </nav>
         </div>
     </main>
@@ -159,7 +135,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl sm:text-4xl font-black mb-4">Pronto para transformar seu atendimento?</h2>
             <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-8">Descubra como a Laura IA pode automatizar suas vendas e qualificar seus leads 24 horas por dia. Agende uma demonstração gratuita e veja a mágica acontecer.</p>
-            <a href="#" class="bg-white text-gray-900 font-bold py-4 px-10 rounded-lg text-lg hover:opacity-90 transition-opacity">Agende uma Demonstração Grátis</a>
+            <a href="#" id="agende-demo-btn" class="bg-white text-gray-900 font-bold py-4 px-10 rounded-lg text-lg hover:opacity-90 transition-opacity">Agende uma Demonstração Grátis</a>
         </div>
     </section>
 
@@ -170,7 +146,168 @@
         </div>
     </footer>
 
+    <!-- Modal para Leitura do Post -->
+    <div id="post-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 z-50 opacity-0 pointer-events-none">
+        <div class="modal-content bg-custom-dark-blue-light rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl relative opacity-0 transform scale-95">
+             <div class="sticky top-0 bg-custom-dark-blue-light p-6 z-10 flex justify-between items-start">
+                <div>
+                    <span id="modal-category" class="text-custom-gold font-bold text-sm mb-2 block"></span>
+                    <h2 id="modal-title" class="text-2xl lg:text-3xl font-bold"></h2>
+                </div>
+                <button id="close-modal-btn" class="text-white text-4xl hover:text-custom-gold">&times;</button>
+            </div>
+            <div class="px-6 pb-8">
+                <img id="modal-img" src="" alt="Imagem do post" class="w-full h-64 object-cover rounded-lg mb-6">
+                <div id="modal-article-content" class="text-gray-300 leading-relaxed"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const postGrid = document.getElementById('post-grid');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const modal = document.getElementById('post-modal');
+    const modalContent = modal.querySelector('.modal-content');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const postsCache = [];
+
+    // --- Abertura de Link do WhatsApp ---
+    const whatsappNumber = "5548988701886"; // Coloque seu número de WhatsApp aqui
+    const whatsappMessage = encodeURIComponent(`Olá! Tenho interesse em saber mais sobre a Laura IA.\n\n*Nome:* \n*Telefone:* \n*Nome do Negócio:* `);
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
+    document.getElementById('fale-conosco-btn-header').href = whatsappUrl;
+    document.getElementById('fale-conosco-btn-header').target = '_blank';
+    document.getElementById('agende-demo-btn').href = whatsappUrl;
+    document.getElementById('agende-demo-btn').target = '_blank';
+
+
+    // --- Lógica do Modal ---
+    function openModal(post) {
+        document.getElementById('modal-img').src = `https://source.unsplash.com/800x600/?${post.imageKeywords}`;
+        document.getElementById('modal-img').alt = `Imagem para o post: ${post.title}`;
+        document.getElementById('modal-category').textContent = post.category.toUpperCase();
+        document.getElementById('modal-title').textContent = post.title;
+        document.getElementById('modal-article-content').innerHTML = post.fullContent;
+        
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modalContent.classList.remove('opacity-0', 'scale-95');
+        document.body.style.overflow = 'hidden'; // Evita scroll do fundo
+    }
+
+    function closeModal() {
+        modal.classList.add('opacity-0');
+        modalContent.classList.add('opacity-0', 'scale-95');
+        setTimeout(() => {
+            modal.classList.add('pointer-events-none');
+            document.body.style.overflow = 'auto'; // Restaura scroll
+        }, 300);
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    
+    document.getElementById('featured-post-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal({
+            title: "O Guia Definitivo para Barbearias Lucrativas: 5 Estratégias para Aumentar seu Faturamento",
+            category: "DICAS DE GESTÃO",
+            fullContent: `<p>Aumentar a lucratividade de uma barbearia vai muito além de simplesmente cortar cabelo. Em um mercado cada vez mais competitivo, donos de negócios precisam se tornar estrategistas, otimizando cada aspecto da operação para garantir não apenas a sobrevivência, mas o crescimento sustentável. Este guia apresenta cinco estratégias comprovadas que podem transformar sua barbearia em uma máquina de faturamento, focando em gestão, tecnologia e, claro, na experiência do cliente.</p><h2>1. Agendamento Inteligente: O Fim das Cadeiras Vazias</h2><p>Uma cadeira vazia é sinônimo de prejuízo. A gestão manual da agenda, seja por telefone ou anotações em papel, é um dos maiores gargalos de qualquer barbearia. Erros acontecem, horários são perdidos e, o mais grave, clientes desistem por não conseguirem um agendamento rápido. A solução é a automação.</p><h3>Implemente um Sistema de Agendamento Online</h3><p>Adotar um sistema que permita aos clientes agendarem seus próprios horários via WhatsApp ou site 24 horas por dia é um diferencial competitivo enorme. Isso não apenas libera sua equipe da tarefa repetitiva de atender o telefone, mas também atende à demanda do cliente moderno, que busca conveniência e imediatismo.</p><h3>Lembretes Automáticos para Reduzir Faltas</h3><p>Uma das maiores dores do setor são os "no-shows" (clientes que agendam e não aparecem). Um assistente de IA como a Laura pode enviar lembretes automáticos um dia antes do agendamento, com um link para confirmação ou cancelamento. Essa simples ação pode reduzir a taxa de faltas em mais de 70%, garantindo que sua agenda seja o mais produtiva possível.</p><h2>2. Clube de Fidelidade que Realmente Funciona</h2><p>É muito mais barato manter um cliente fiel do que adquirir um novo. No entanto, muitos programas de fidelidade falham por serem complicados ou pouco atrativos. O segredo é a simplicidade e a automação.</p><h3>Digitalize o Cartão Fidelidade</h3><p>Abandone os cartões de papel que os clientes perdem. Utilize um sistema digital onde a cada serviço, o cliente acumula pontos automaticamente no seu cadastro, vinculado ao número de telefone. A Laura IA pode gerenciar isso, informando proativamente ao cliente quantos pontos ele tem e quando está perto de ganhar um prêmio, como um corte grátis ou um produto.</p><h3>Ofereça Recompensas Valiosas</h3><p>Pense além do corte grátis. Ofereça um serviço de maior valor agregado, como uma hidratação capilar, um design de barba premium ou até mesmo produtos da sua prateleira. Isso não só recompensa a fidelidade, mas também apresenta ao cliente outros serviços que ele pode passar a consumir.</p><h2>3. Marketing de Reativação: Traga os "Sumidos" de Volta</h2><p>Muitos clientes simplesmente deixam de frequentar a barbearia por esquecimento ou pela correria do dia a dia. Uma campanha de reativação automática pode trazê-los de volta com um custo quase zero.</p><h3>Monitore a Frequência e Automatize o Contato</h3><p>Configure a Laura para identificar clientes que não retornam há mais de 30 ou 60 dias. Após esse período, a IA pode enviar uma mensagem personalizada e amigável, como: "E aí, [Nome do Cliente]! Sentimos sua falta por aqui. Que tal voltar com 20% de desconto no seu próximo corte?". Essa abordagem pessoal e com um benefício claro é extremamente eficaz.</p><h2>4. Upselling e Cross-selling Inteligente</h2><p>Aumentar o ticket médio é uma das formas mais rápidas de aumentar o faturamento. Sua equipe deve ser treinada, e sua tecnologia, programada para sugerir produtos e serviços adicionais de forma natural.</p><h3>Sugestões no Momento do Agendamento</h3><p>Quando um cliente agenda um corte, a Laura pode perguntar: "Ótimo! Gostaria de aproveitar e adicionar um design de barba por um preço especial?". Oferecer o combo no momento do agendamento aumenta significativamente a taxa de aceitação.</p><h3>Venda de Produtos</h3><p>Após o serviço, o barbeiro pode indicar a pomada ou o óleo que usou. Em seguida, a IA pode enviar uma mensagem: "Curtiu o resultado? A pomada que usamos hoje está disponível para compra. Responda 'QUERO' e já deixamos separada para você".</p><h2>5. Gestão de Reputação Online</h2><p>Hoje, a primeira impressão de muitos clientes acontece no Google. Ter uma boa avaliação é crucial para atrair novos frequentadores.</p><h3>Peça Avaliações de Forma Automática</h3><p>Após um serviço, a Laura pode enviar uma mensagem de pesquisa de satisfação. Se a resposta for positiva (4 ou 5 estrelas), a IA agradece e envia automaticamente o link direto para a página de avaliação do Google da barbearia. Isso potencializa o número de reviews positivos, construindo uma reputação online sólida e atraindo mais clientes sem gastar um centavo em anúncios.</p><p>Implementando essas cinco estratégias, sua barbearia deixará de ser apenas um local para cortar cabelo e se tornará um negócio moderno, eficiente e altamente lucrativo.</p>`,
+            imageKeywords: "barbershop,strategy"
+        });
+    });
+
+
+    // --- Lógica de Geração de Posts ---
+    function renderPosts(posts) {
+        loadingSpinner.style.display = 'none';
+        postGrid.innerHTML = ''; 
+        postsCache.push(...posts); // Adiciona ao cache
+        posts.forEach(post => {
+            const postElement = document.createElement('div');
+            postElement.className = 'bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg flex flex-col';
+            postElement.innerHTML = `
+                <img src="https://source.unsplash.com/600x400/?${post.imageKeywords}" alt="Imagem para o post: ${post.title}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+                <div class="p-6 flex flex-col flex-grow">
+                    <span class="text-custom-gold font-bold text-sm mb-2 block">${post.category.toUpperCase()}</span>
+                    <h3 class="text-xl font-bold mb-3 flex-grow">${post.title}</h3>
+                    <button class="read-more-btn font-bold text-white hover:text-custom-gold transition-colors self-start">Ler mais &rarr;</button>
+                </div>
+            `;
+            postElement.querySelector('.read-more-btn').addEventListener('click', () => openModal(post));
+            postGrid.appendChild(postElement);
+        });
+    }
+
+    function renderError(message) {
+        loadingSpinner.style.display = 'none';
+        postGrid.innerHTML = `<div class="col-span-full text-center text-red-400 text-lg">${message}</div>`;
+    }
+
+    async function generateBlogPosts() {
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        const systemPrompt = `Você é um especialista em SEO e redator de conteúdo para "Laura IA", uma empresa que vende assistentes virtuais de IA para PMEs. Seu público são donos de negócios (barbearias, e-commerces, etc.). Crie artigos de blog completos, com mais de 1000 palavras, otimizados para SEO, com uma estrutura clara (H2, H3, parágrafos, listas) e em formato HTML. O conteúdo deve ser prático, informativo e direto.`;
+        const userQuery = `Gere 6 artigos de blog. Para cada um, forneça: uma 'category' (Gestão, Marketing e Vendas, Tecnologia e IA, ou Cases de Sucesso), um 'title' criativo, um 'fullContent' (o artigo completo em HTML com +1000 palavras, otimizado para a palavra-chave do título, usando tags <h2>, <h3>, <p>, <ul>, <li>), e 2 ou 3 'imageKeywords' em inglês, separadas por vírgula, para buscar uma imagem (ex: 'ecommerce,automation,sales').`;
+
+        const schema = {
+            type: "ARRAY",
+            items: {
+                type: "OBJECT",
+                properties: {
+                    category: { type: "STRING" },
+                    title: { type: "STRING" },
+                    fullContent: { type: "STRING" },
+                    imageKeywords: { type: "STRING" }
+                },
+                required: ["category", "title", "fullContent", "imageKeywords"]
+            }
+        };
+        
+        const payload = {
+            contents: [{ parts: [{ text: userQuery }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] },
+            generationConfig: {
+                responseMimeType: "application/json",
+                responseSchema: schema
+            }
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`Erro na API: ${response.status} ${response.statusText} - ${errorBody}`);
+            }
+
+            const result = await response.json();
+            const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+            
+            if (jsonText) {
+                const posts = JSON.parse(jsonText);
+                renderPosts(posts);
+            } else {
+                throw new Error("A resposta da API não contém o conteúdo esperado.");
+            }
+        } catch (error) {
+            console.error('Falha ao gerar conteúdo do blog:', error);
+            renderError('Desculpe, não foi possível carregar os posts no momento. Tente novamente mais tarde.');
+        }
+    }
+
+    generateBlogPosts();
+});
+</script>
+
 </body>
 </html>
-
 
