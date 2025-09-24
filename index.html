@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - Laura IA</title>
     <!-- FAVICON -->
-    <link rel="icon" href="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x34.png" type="image/png">
+    <link rel="icon" href="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,7 +77,9 @@
     <!-- Cabeçalho -->
     <header class="py-6 px-4 sm:px-6 lg:px-8">
         <div class="container mx-auto flex justify-between items-center">
-            <img src="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" alt="Logo Laura IA" class="h-10 sm:h-12">
+            <a href="https://laura-ia.com.br/" target="_blank">
+                <img src="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" alt="Logo Laura IA" class="h-10 sm:h-12">
+            </a>
             <a href="#" id="fale-conosco-btn-header" class="contact-trigger bg-white text-gray-900 font-bold py-2 px-6 rounded-lg text-sm sm:text-base hover:opacity-90 transition-opacity">Fale Conosco</a>
         </div>
     </header>
@@ -238,9 +240,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
-    // Inicia os ícones do Feather primeiro para garantir que o widget seja renderizado
-    feather.replace();
-
+    
     const postGrid = document.getElementById('post-grid');
     const paginationNav = document.getElementById('pagination-nav');
     
@@ -295,6 +295,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function openContactModal(e) {
         if (e) e.preventDefault();
+        // Fecha outros modais se estiverem abertos
+        closeToolsModal(true); 
+
         contactModal.classList.remove('hidden-modal');
         setTimeout(() => {
             contactModal.classList.remove('opacity-0');
@@ -303,17 +306,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.body.style.overflow = 'hidden';
     }
 
-    function closeContactModal() {
+    function closeContactModal(instant = false) {
+        if (instant) {
+            contactModal.classList.add('hidden-modal', 'opacity-0');
+            contactModalContent.classList.add('opacity-0', 'scale-95');
+            return;
+        }
         contactModal.classList.add('opacity-0');
         contactModalContent.classList.add('opacity-0', 'scale-95');
         setTimeout(() => {
             contactModal.classList.add('hidden-modal');
-            document.body.style.overflow = 'auto';
+            if (!document.querySelector('.modal-overlay:not(.hidden-modal)')) {
+               document.body.style.overflow = 'auto';
+            }
         }, 300);
     }
     
     contactTriggers.forEach(trigger => trigger.addEventListener('click', openContactModal));
-    closeContactModalBtn.addEventListener('click', closeContactModal);
+    closeContactModalBtn.addEventListener('click', () => closeContactModal());
     contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeContactModal(); });
 
     contactForm.addEventListener('submit', (e) => {
@@ -346,17 +356,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.body.style.overflow = 'hidden';
     }
 
-     function closeToolsModal() {
+     function closeToolsModal(instant = false) {
+        if (instant) {
+            toolsModal.classList.add('hidden-modal', 'opacity-0');
+            toolsModalContent.classList.add('opacity-0', 'scale-95');
+            return;
+        }
         toolsModal.classList.add('opacity-0');
         toolsModalContent.classList.add('opacity-0', 'scale-95');
         setTimeout(() => {
             toolsModal.classList.add('hidden-modal');
-            document.body.style.overflow = 'auto';
+             if (!document.querySelector('.modal-overlay:not(.hidden-modal)')) {
+               document.body.style.overflow = 'auto';
+            }
         }, 300);
     }
     
     toolsWidgetBtn.addEventListener('click', openToolsModal);
-    closeToolsModalBtn.addEventListener('click', closeToolsModal);
+    closeToolsModalBtn.addEventListener('click', () => closeToolsModal());
     toolsModal.addEventListener('click', (e) => { if (e.target === toolsModal) closeToolsModal(); });
 
 
@@ -370,6 +387,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const start = (page - 1) * postsPerPage;
         const end = start + postsPerPage;
         const postsToRender = allPosts.slice(start, end);
+
+        if (postsToRender.length === 0 && page > 1) {
+             postGrid.innerHTML = `<div class="col-span-full text-center text-gray-400">Fim dos artigos.</div>`;
+             return;
+        }
 
         postsToRender.forEach(post => {
             const postElement = document.createElement('div');
@@ -402,9 +424,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 currentPage = i;
                 renderPosts(currentPage);
                 
-                // Atualiza a classe ativa
                 document.querySelectorAll('.pagination-btn').forEach(btn => btn.classList.remove('active'));
                 pageButton.classList.add('active');
+                window.scrollTo({ top: postGrid.offsetTop - 100, behavior: 'smooth' });
             });
             paginationNav.appendChild(pageButton);
         }
@@ -456,6 +478,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     renderPosts(currentPage);
     setupPagination();
+    
+    // Inicia os ícones do Feather no final para garantir que tudo foi carregado
+    feather.replace();
 });
 </script>
 
