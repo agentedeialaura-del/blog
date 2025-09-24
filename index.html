@@ -70,6 +70,10 @@
             background-color: white;
             color: #0d1b2a;
         }
+        /* Estilo para dropdown */
+        .dropdown-menu {
+            transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+        }
     </style>
 </head>
 <body class="bg-custom-dark-blue text-white">
@@ -80,7 +84,47 @@
             <a href="https://laura-ia.com.br/" target="_blank">
                 <img src="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" alt="Logo Laura IA" class="h-10 sm:h-12">
             </a>
-            <a href="#" id="fale-conosco-btn-header" class="contact-trigger bg-white text-gray-900 font-bold py-2 px-6 rounded-lg text-sm sm:text-base hover:opacity-90 transition-opacity">Fale Conosco</a>
+            <div class="flex items-center gap-4">
+                <!-- Menu Dropdown Ferramentas -->
+                <div class="relative" id="tools-menu-container">
+                    <button id="tools-menu-btn" class="flex items-center gap-2 bg-custom-dark-blue-light text-white font-bold py-2 px-6 rounded-lg text-sm sm:text-base hover:bg-gray-700 transition-colors">
+                        <span>Ferramentas de IA</span>
+                        <i data-feather="chevron-down" class="w-4 h-4"></i>
+                    </button>
+                    <div id="tools-menu-dropdown" class="dropdown-menu absolute right-0 mt-2 w-72 bg-custom-dark-blue-light rounded-lg shadow-xl z-20 p-2 opacity-0 transform scale-95 pointer-events-none">
+                        <a href="#" class="contact-trigger group flex items-center gap-3 p-3 rounded-md hover:bg-gray-700 transition-colors">
+                           <i data-feather="zap" class="w-5 h-5 text-custom-gold"></i>
+                           <div>
+                                <p class="font-semibold text-white">Laura IA</p>
+                                <p class="text-xs text-gray-400">Automatize sua gestão e vendas.</p>
+                           </div>
+                        </a>
+                         <a href="https://www.canva.com/magic-studio/" target="_blank" class="group flex items-center gap-3 p-3 rounded-md hover:bg-gray-700 transition-colors">
+                           <i data-feather="image" class="w-5 h-5 text-custom-gold"></i>
+                           <div>
+                                <p class="font-semibold text-white">Canva Magic Studio</p>
+                                <p class="text-xs text-gray-400">Crie posts para redes sociais.</p>
+                           </div>
+                        </a>
+                         <a href="https://chat.openai.com/" target="_blank" class="group flex items-center gap-3 p-3 rounded-md hover:bg-gray-700 transition-colors">
+                           <i data-feather="message-circle" class="w-5 h-5 text-custom-gold"></i>
+                           <div>
+                                <p class="font-semibold text-white">ChatGPT</p>
+                                <p class="text-xs text-gray-400">Gere ideias e textos criativos.</p>
+                           </div>
+                        </a>
+                         <a href="https://looka.com/" target="_blank" class="group flex items-center gap-3 p-3 rounded-md hover:bg-gray-700 transition-colors">
+                           <i data-feather="award" class="w-5 h-5 text-custom-gold"></i>
+                           <div>
+                                <p class="font-semibold text-white">Looka</p>
+                                <p class="text-xs text-gray-400">Desenvolva sua marca e logo.</p>
+                           </div>
+                        </a>
+                    </div>
+                </div>
+
+                <a href="#" id="fale-conosco-btn-header" class="contact-trigger bg-white text-gray-900 font-bold py-2 px-6 rounded-lg text-sm sm:text-base hover:opacity-90 transition-opacity">Fale Conosco</a>
+            </div>
         </div>
     </header>
 
@@ -143,10 +187,6 @@
         </div>
     </footer>
 
-    <!-- Botão Widget de Ferramentas -->
-    <button id="tools-widget-btn" class="fixed bottom-6 right-6 bg-custom-gold text-gray-900 w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform">
-        <i data-feather="tool" class="w-8 h-8"></i>
-    </button>
 
     <!-- Modal para Leitura do Post -->
     <div id="post-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 z-50 hidden-modal">
@@ -188,58 +228,9 @@
         </div>
     </div>
 
-    <!-- Modal de Ferramentas de IA -->
-    <div id="tools-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 z-50 hidden-modal">
-        <div class="modal-content bg-custom-dark-blue-light rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl relative opacity-0 transform scale-95 p-8">
-            <button id="close-tools-modal-btn" class="absolute top-4 right-4 text-white text-3xl hover:text-custom-gold">&times;</button>
-            <h2 class="text-2xl lg:text-3xl font-bold mb-6 text-center flex items-center justify-center gap-3">
-                <i data-feather="tool" class="w-8 h-8 text-custom-gold"></i>
-                Ferramentas de IA para Barbearias
-            </h2>
-            <div class="space-y-6">
-                <!-- Ferramenta 1: Laura IA -->
-                <div class="bg-gray-900 p-4 rounded-lg flex items-start gap-4">
-                    <img src="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" alt="Logo Laura IA" class="w-12 h-12 rounded-md object-contain bg-white p-1">
-                    <div>
-                        <h3 class="font-bold text-lg">Laura IA (Gestão e Atendimento)</h3>
-                        <p class="text-sm text-gray-400 mt-1 mb-2">Seu agente de IA para automatizar agendamentos, confirmar horários, reativar clientes e gerenciar o clube de fidelidade. Libere seu tempo e nunca mais perca um cliente.</p>
-                        <a href="#" class="contact-trigger text-sm font-bold text-custom-gold hover:underline">Fale com um especialista &rarr;</a>
-                    </div>
-                </div>
-                <!-- Ferramenta 2: Canva -->
-                <div class="bg-gray-900 p-4 rounded-lg flex items-start gap-4">
-                     <img src="https://static.canva.com/static/images/canva_logo_320.svg" alt="Logo Canva" class="w-12 h-12 rounded-md object-contain bg-white p-1">
-                    <div>
-                        <h3 class="font-bold text-lg">Canva Magic Studio (Marketing)</h3>
-                        <p class="text-sm text-gray-400 mt-1 mb-2">Crie posts, stories e vídeos profissionais para o Instagram da sua barbearia em minutos. A IA do Canva sugere layouts, remove fundos de fotos e até escreve textos para suas publicações.</p>
-                        <a href="https://www.canva.com/magic-studio/" target="_blank" class="text-sm font-bold text-custom-gold hover:underline">Acessar Canva &rarr;</a>
-                    </div>
-                </div>
-                <!-- Ferramenta 3: ChatGPT -->
-                 <div class="bg-gray-900 p-4 rounded-lg flex items-start gap-4">
-                     <img src="https://openai.com/favicon.ico" alt="Logo ChatGPT" class="w-12 h-12 rounded-md object-contain bg-white p-1">
-                    <div>
-                        <h3 class="font-bold text-lg">ChatGPT (Ideias e Textos)</h3>
-                        <p class="text-sm text-gray-400 mt-1 mb-2">Precisa de ideias para posts ou legendas criativas? O ChatGPT é um assistente de escrita que pode criar textos para suas campanhas, responder a reviews e gerar ideias de promoções.</p>
-                        <a href="https://chat.openai.com/" target="_blank" class="text-sm font-bold text-custom-gold hover:underline">Usar ChatGPT &rarr;</a>
-                    </div>
-                </div>
-                <!-- Ferramenta 4: Looka -->
-                 <div class="bg-gray-900 p-4 rounded-lg flex items-start gap-4">
-                     <img src="https://looka.com/favicon.ico" alt="Logo Looka" class="w-12 h-12 rounded-md object-contain bg-white p-1">
-                    <div>
-                        <h3 class="font-bold text-lg">Looka (Criação de Marca)</h3>
-                        <p class="text-sm text-gray-400 mt-1 mb-2">Crie um logo profissional e toda a identidade visual da sua barbearia. A IA do Looka gera centenas de opções de design, ajudando a construir uma marca forte e memorável.</p>
-                        <a href="https://looka.com/" target="_blank" class="text-sm font-bold text-custom-gold hover:underline">Criar meu Logo &rarr;</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
+    feather.replace(); // Garante que todos os ícones sejam renderizados
     
     const postGrid = document.getElementById('post-grid');
     const paginationNav = document.getElementById('pagination-nav');
@@ -291,13 +282,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const contactModalContent = contactModal.querySelector('.modal-content');
     const closeContactModalBtn = document.getElementById('close-contact-modal-btn');
     const contactForm = document.getElementById('contact-form');
-    const contactTriggers = document.querySelectorAll('.contact-trigger');
+    let contactTriggers = document.querySelectorAll('.contact-trigger');
 
     function openContactModal(e) {
         if (e) e.preventDefault();
-        // Fecha outros modais se estiverem abertos
-        closeToolsModal(true); 
-
+        closeToolsModal(true); // Fecha outros modais se estiverem abertos
         contactModal.classList.remove('hidden-modal');
         setTimeout(() => {
             contactModal.classList.remove('opacity-0');
@@ -322,7 +311,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }, 300);
     }
     
-    contactTriggers.forEach(trigger => trigger.addEventListener('click', openContactModal));
+    function setupContactTriggers() {
+        contactTriggers = document.querySelectorAll('.contact-trigger');
+        contactTriggers.forEach(trigger => trigger.addEventListener('click', openContactModal));
+    }
+
+    setupContactTriggers(); // Configura os gatilhos iniciais
     closeContactModalBtn.addEventListener('click', () => closeContactModal());
     contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeContactModal(); });
 
@@ -341,40 +335,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         contactForm.reset();
     });
 
-    // --- Lógica do Modal de Ferramentas ---
-    const toolsModal = document.getElementById('tools-modal');
-    const toolsModalContent = toolsModal.querySelector('.modal-content');
-    const closeToolsModalBtn = document.getElementById('close-tools-modal-btn');
-    const toolsWidgetBtn = document.getElementById('tools-widget-btn');
-
-    function openToolsModal() {
-        toolsModal.classList.remove('hidden-modal');
-        setTimeout(() => {
-            toolsModal.classList.remove('opacity-0');
-            toolsModalContent.classList.remove('opacity-0', 'scale-95');
-        }, 10);
-        document.body.style.overflow = 'hidden';
-    }
-
-     function closeToolsModal(instant = false) {
-        if (instant) {
-            toolsModal.classList.add('hidden-modal', 'opacity-0');
-            toolsModalContent.classList.add('opacity-0', 'scale-95');
-            return;
-        }
-        toolsModal.classList.add('opacity-0');
-        toolsModalContent.classList.add('opacity-0', 'scale-95');
-        setTimeout(() => {
-            toolsModal.classList.add('hidden-modal');
-             if (!document.querySelector('.modal-overlay:not(.hidden-modal)')) {
-               document.body.style.overflow = 'auto';
-            }
-        }, 300);
-    }
+    // --- Lógica do Menu de Ferramentas ---
+    const toolsMenuBtn = document.getElementById('tools-menu-btn');
+    const toolsMenuDropdown = document.getElementById('tools-menu-dropdown');
     
-    toolsWidgetBtn.addEventListener('click', openToolsModal);
-    closeToolsModalBtn.addEventListener('click', () => closeToolsModal());
-    toolsModal.addEventListener('click', (e) => { if (e.target === toolsModal) closeToolsModal(); });
+    toolsMenuBtn.addEventListener('click', () => {
+        const isHidden = toolsMenuDropdown.classList.contains('opacity-0');
+        if (isHidden) {
+            toolsMenuDropdown.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+        } else {
+            toolsMenuDropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+        }
+    });
+
+    // Fecha o dropdown se clicar fora
+    document.addEventListener('click', (e) => {
+        const container = document.getElementById('tools-menu-container');
+        if (!container.contains(e.target)) {
+            toolsMenuDropdown.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+        }
+    });
 
 
     // --- Lógica de Posts e Paginação ---
@@ -450,7 +430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         {
             category: "Gestão",
             title: "Menos Tempo no Telefone, Mais Tempo Gerindo: O Guia para Automatizar sua Imobiliária",
-            fullContent: "<h2>O gargalo do atendimento</h2><p>Corretores de imóveis perdem horas preciosas todos os dias respondendo às mesmas perguntas de dezenas de leads: 'Esse imóvel ainda está disponível?', 'Qual o valor do condomínio?', 'Podemos agendar uma visita?'. A Laura IA foi projetada para ser a triagem perfeita, qualificando leads 24 horas por dia e entregando para sua equipe apenas os contatos mais quentes e prontos para a próxima etapa.</p><h3>Filtro Inteligente de Leads</h3><p>A Laura pode ser treinada com as informações de todos os seus imóveis. Quando um lead entra em contato, ela faz as perguntas-chave: Qual o seu orçamento? Quantos quartos você precisa? Qual a região de preferência? Com base nas respostas, ela apresenta os imóveis mais adequados do seu portfólio.</p><h3>Agendamento de Visitas Automático</h3><p>Após encontrar o imóvel ideal, a Laura pode se integrar à agenda dos seus corretores e oferecer os horários disponíveis para visita, realizando o agendamento completo sem qualquer intervenção humana. O corretor apenas recebe a notificação do compromisso em seu calendário.</p>",
+            fullContent: "<h2>O gargalo do atendimento</h2><p>Corretores de imóveis perdem horas preciosas todos os dias respondendo às mesmas perguntas de dezenas de leads: 'Esse imóvel ainda está disponível?', 'Qual o valor do condomínio?', 'Podemos agendar uma visita?'. A Laura IA foi projetada para ser a triagem perfeita, qualificando leads 24 horas por dia e entregando para sua equipe apenas os contatos mais quentes e prontos para a próxima etapa.</p><h3>Filtro Inteligente de Leads</h3><p>A Laura pode ser treinada com as informações de todos os seus imóveis. Quando um lead entra em contato, ela faz as perguntas-chave: Qual o seu orçamento? Quantos quartos você precisa? Qual a região de preferência? Com base nas respostas, ela apresenta os imóveis mais adequados do seu portfólo.</p><h3>Agendamento de Visitas Automático</h3><p>Após encontrar o imóvel ideal, a Laura pode se integrar à agenda dos seus corretores e oferecer os horários disponíveis para visita, realizando o agendamento completo sem qualquer intervenção humana. O corretor apenas recebe a notificação do compromisso em seu calendário.</p>",
             imageKeywords: "real,estate,automation,management"
         },
         {
