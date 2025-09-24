@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - Laura IA</title>
+    <!-- FAVICON -->
+    <link rel="icon" href="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,6 +72,10 @@
         #modal-article-content li {
             margin-bottom: 0.5rem;
         }
+        .hidden-modal {
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-custom-dark-blue text-white">
@@ -78,7 +84,7 @@
     <header class="py-6 px-4 sm:px-6 lg:px-8">
         <div class="container mx-auto flex justify-between items-center">
             <img src="https://laura-ia.com.br/wp-content/uploads/2025/06/claralogo-e1750978255121-1024x304.png" alt="Logo Laura IA" class="h-10 sm:h-12">
-            <a href="#" id="fale-conosco-btn-header" class="bg-white text-gray-900 font-bold py-2 px-6 rounded-lg text-sm sm:text-base hover:opacity-90 transition-opacity">Fale Conosco</a>
+            <a href="#" id="fale-conosco-btn-header" class="contact-trigger bg-white text-gray-900 font-bold py-2 px-6 rounded-lg text-sm sm:text-base hover:opacity-90 transition-opacity">Fale Conosco</a>
         </div>
     </header>
 
@@ -135,7 +141,7 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl sm:text-4xl font-black mb-4">Pronto para transformar seu atendimento?</h2>
             <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-8">Descubra como a Laura IA pode automatizar suas vendas e qualificar seus leads 24 horas por dia. Agende uma demonstração gratuita e veja a mágica acontecer.</p>
-            <a href="#" id="agende-demo-btn" class="bg-white text-gray-900 font-bold py-4 px-10 rounded-lg text-lg hover:opacity-90 transition-opacity">Agende uma Demonstração Grátis</a>
+            <a href="#" id="agende-demo-btn" class="contact-trigger bg-white text-gray-900 font-bold py-4 px-10 rounded-lg text-lg hover:opacity-90 transition-opacity">Agende uma Demonstração Grátis</a>
         </div>
     </section>
 
@@ -147,7 +153,7 @@
     </footer>
 
     <!-- Modal para Leitura do Post -->
-    <div id="post-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 z-50 opacity-0 pointer-events-none">
+    <div id="post-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 z-50 hidden-modal">
         <div class="modal-content bg-custom-dark-blue-light rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl relative opacity-0 transform scale-95">
              <div class="sticky top-0 bg-custom-dark-blue-light p-6 z-10 flex justify-between items-start">
                 <div>
@@ -162,57 +168,71 @@
             </div>
         </div>
     </div>
+    
+    <!-- Modal de Contato para WhatsApp -->
+    <div id="contact-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 z-50 hidden-modal">
+        <div class="modal-content bg-custom-dark-blue-light rounded-2xl w-full max-w-md shadow-2xl relative opacity-0 transform scale-95 p-8">
+            <button id="close-contact-modal-btn" class="absolute top-4 right-4 text-white text-3xl hover:text-custom-gold">&times;</button>
+            <h2 class="text-2xl font-bold mb-6 text-center">Fale com um Especialista</h2>
+            <form id="contact-form">
+                <div class="mb-4">
+                    <label for="lead-name" class="block text-sm font-bold mb-2 text-gray-300">Seu Nome</label>
+                    <input type="text" id="lead-name" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-custom-gold">
+                </div>
+                <div class="mb-4">
+                    <label for="lead-phone" class="block text-sm font-bold mb-2 text-gray-300">Seu Telefone (com DDD)</label>
+                    <input type="tel" id="lead-phone" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-custom-gold">
+                </div>
+                <div class="mb-6">
+                    <label for="lead-business" class="block text-sm font-bold mb-2 text-gray-300">Nome do seu Negócio</label>
+                    <input type="text" id="lead-business" required class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-custom-gold">
+                </div>
+                <button type="submit" class="w-full bg-white text-gray-900 font-bold py-3 px-6 rounded-lg text-lg hover:opacity-90 transition-opacity">Iniciar Conversa no WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', async () => {
     const postGrid = document.getElementById('post-grid');
     const loadingSpinner = document.getElementById('loading-spinner');
-    const modal = document.getElementById('post-modal');
-    const modalContent = modal.querySelector('.modal-content');
-    const closeModalBtn = document.getElementById('close-modal-btn');
-    const postsCache = [];
+    
+    // --- Lógica do Modal de Leitura ---
+    const postModal = document.getElementById('post-modal');
+    const postModalContent = postModal.querySelector('.modal-content');
+    const closePostModalBtn = document.getElementById('close-modal-btn');
 
-    // --- Abertura de Link do WhatsApp ---
-    const whatsappNumber = "5548988701886"; // Coloque seu número de WhatsApp aqui
-    const whatsappMessage = encodeURIComponent(`Olá! Tenho interesse em saber mais sobre a Laura IA.\n\n*Nome:* \n*Telefone:* \n*Nome do Negócio:* `);
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-
-    document.getElementById('fale-conosco-btn-header').href = whatsappUrl;
-    document.getElementById('fale-conosco-btn-header').target = '_blank';
-    document.getElementById('agende-demo-btn').href = whatsappUrl;
-    document.getElementById('agende-demo-btn').target = '_blank';
-
-
-    // --- Lógica do Modal ---
-    function openModal(post) {
+    function openPostModal(post) {
         document.getElementById('modal-img').src = `https://source.unsplash.com/800x600/?${post.imageKeywords}`;
         document.getElementById('modal-img').alt = `Imagem para o post: ${post.title}`;
         document.getElementById('modal-category').textContent = post.category.toUpperCase();
         document.getElementById('modal-title').textContent = post.title;
         document.getElementById('modal-article-content').innerHTML = post.fullContent;
         
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        modalContent.classList.remove('opacity-0', 'scale-95');
-        document.body.style.overflow = 'hidden'; // Evita scroll do fundo
+        postModal.classList.remove('hidden-modal');
+        setTimeout(() => {
+            postModal.classList.remove('opacity-0');
+            postModalContent.classList.remove('opacity-0', 'scale-95');
+        }, 10);
+        document.body.style.overflow = 'hidden';
     }
 
-    function closeModal() {
-        modal.classList.add('opacity-0');
-        modalContent.classList.add('opacity-0', 'scale-95');
+    function closePostModal() {
+        postModal.classList.add('opacity-0');
+        postModalContent.classList.add('opacity-0', 'scale-95');
         setTimeout(() => {
-            modal.classList.add('pointer-events-none');
-            document.body.style.overflow = 'auto'; // Restaura scroll
+            postModal.classList.add('hidden-modal');
+            document.body.style.overflow = 'auto';
         }, 300);
     }
 
-    closeModalBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-    });
+    closePostModalBtn.addEventListener('click', closePostModal);
+    postModal.addEventListener('click', (e) => { if (e.target === postModal) closePostModal(); });
     
     document.getElementById('featured-post-link').addEventListener('click', (e) => {
         e.preventDefault();
-        openModal({
+        openPostModal({
             title: "O Guia Definitivo para Barbearias Lucrativas: 5 Estratégias para Aumentar seu Faturamento",
             category: "DICAS DE GESTÃO",
             fullContent: `<p>Aumentar a lucratividade de uma barbearia vai muito além de simplesmente cortar cabelo. Em um mercado cada vez mais competitivo, donos de negócios precisam se tornar estrategistas, otimizando cada aspecto da operação para garantir não apenas a sobrevivência, mas o crescimento sustentável. Este guia apresenta cinco estratégias comprovadas que podem transformar sua barbearia em uma máquina de faturamento, focando em gestão, tecnologia e, claro, na experiência do cliente.</p><h2>1. Agendamento Inteligente: O Fim das Cadeiras Vazias</h2><p>Uma cadeira vazia é sinônimo de prejuízo. A gestão manual da agenda, seja por telefone ou anotações em papel, é um dos maiores gargalos de qualquer barbearia. Erros acontecem, horários são perdidos e, o mais grave, clientes desistem por não conseguirem um agendamento rápido. A solução é a automação.</p><h3>Implemente um Sistema de Agendamento Online</h3><p>Adotar um sistema que permita aos clientes agendarem seus próprios horários via WhatsApp ou site 24 horas por dia é um diferencial competitivo enorme. Isso não apenas libera sua equipe da tarefa repetitiva de atender o telefone, mas também atende à demanda do cliente moderno, que busca conveniência e imediatismo.</p><h3>Lembretes Automáticos para Reduzir Faltas</h3><p>Uma das maiores dores do setor são os "no-shows" (clientes que agendam e não aparecem). Um assistente de IA como a Laura pode enviar lembretes automáticos um dia antes do agendamento, com um link para confirmação ou cancelamento. Essa simples ação pode reduzir a taxa de faltas em mais de 70%, garantindo que sua agenda seja o mais produtiva possível.</p><h2>2. Clube de Fidelidade que Realmente Funciona</h2><p>É muito mais barato manter um cliente fiel do que adquirir um novo. No entanto, muitos programas de fidelidade falham por serem complicados ou pouco atrativos. O segredo é a simplicidade e a automação.</p><h3>Digitalize o Cartão Fidelidade</h3><p>Abandone os cartões de papel que os clientes perdem. Utilize um sistema digital onde a cada serviço, o cliente acumula pontos automaticamente no seu cadastro, vinculado ao número de telefone. A Laura IA pode gerenciar isso, informando proativamente ao cliente quantos pontos ele tem e quando está perto de ganhar um prêmio, como um corte grátis ou um produto.</p><h3>Ofereça Recompensas Valiosas</h3><p>Pense além do corte grátis. Ofereça um serviço de maior valor agregado, como uma hidratação capilar, um design de barba premium ou até mesmo produtos da sua prateleira. Isso não só recompensa a fidelidade, mas também apresenta ao cliente outros serviços que ele pode passar a consumir.</p><h2>3. Marketing de Reativação: Traga os "Sumidos" de Volta</h2><p>Muitos clientes simplesmente deixam de frequentar a barbearia por esquecimento ou pela correria do dia a dia. Uma campanha de reativação automática pode trazê-los de volta com um custo quase zero.</p><h3>Monitore a Frequência e Automatize o Contato</h3><p>Configure a Laura para identificar clientes que não retornam há mais de 30 ou 60 dias. Após esse período, a IA pode enviar uma mensagem personalizada e amigável, como: "E aí, [Nome do Cliente]! Sentimos sua falta por aqui. Que tal voltar com 20% de desconto no seu próximo corte?". Essa abordagem pessoal e com um benefício claro é extremamente eficaz.</p><h2>4. Upselling e Cross-selling Inteligente</h2><p>Aumentar o ticket médio é uma das formas mais rápidas de aumentar o faturamento. Sua equipe deve ser treinada, e sua tecnologia, programada para sugerir produtos e serviços adicionais de forma natural.</p><h3>Sugestões no Momento do Agendamento</h3><p>Quando um cliente agenda um corte, a Laura pode perguntar: "Ótimo! Gostaria de aproveitar e adicionar um design de barba por um preço especial?". Oferecer o combo no momento do agendamento aumenta significativamente a taxa de aceitação.</p><h3>Venda de Produtos</h3><p>Após o serviço, o barbeiro pode indicar a pomada ou o óleo que usou. Em seguida, a IA pode enviar uma mensagem: "Curtiu o resultado? A pomada que usamos hoje está disponível para compra. Responda 'QUERO' e já deixamos separada para você".</p><h2>5. Gestão de Reputação Online</h2><p>Hoje, a primeira impressão de muitos clientes acontece no Google. Ter uma boa avaliação é crucial para atrair novos frequentadores.</p><h3>Peça Avaliações de Forma Automática</h3><p>Após um serviço, a Laura pode enviar uma mensagem de pesquisa de satisfação. Se a resposta for positiva (4 ou 5 estrelas), a IA agradece e envia automaticamente o link direto para a página de avaliação do Google da barbearia. Isso potencializa o número de reviews positivos, construindo uma reputação online sólida e atraindo mais clientes sem gastar um centavo em anúncios.</p><p>Implementando essas cinco estratégias, sua barbearia deixará de ser apenas um local para cortar cabelo e se tornará um negócio moderno, eficiente e altamente lucrativo.</p>`,
@@ -220,12 +240,56 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
+    // --- Lógica do Modal de Contato ---
+    const contactModal = document.getElementById('contact-modal');
+    const contactModalContent = contactModal.querySelector('.modal-content');
+    const closeContactModalBtn = document.getElementById('close-contact-modal-btn');
+    const contactForm = document.getElementById('contact-form');
+    const contactTriggers = document.querySelectorAll('.contact-trigger');
+
+    function openContactModal(e) {
+        e.preventDefault();
+        contactModal.classList.remove('hidden-modal');
+        setTimeout(() => {
+            contactModal.classList.remove('opacity-0');
+            contactModalContent.classList.remove('opacity-0', 'scale-95');
+        }, 10);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeContactModal() {
+        contactModal.classList.add('opacity-0');
+        contactModalContent.classList.add('opacity-0', 'scale-95');
+        setTimeout(() => {
+            contactModal.classList.add('hidden-modal');
+            document.body.style.overflow = 'auto';
+        }, 300);
+    }
+    
+    contactTriggers.forEach(trigger => trigger.addEventListener('click', openContactModal));
+    closeContactModalBtn.addEventListener('click', closeContactModal);
+    contactModal.addEventListener('click', (e) => { if (e.target === contactModal) closeContactModal(); });
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('lead-name').value;
+        const phone = document.getElementById('lead-phone').value;
+        const business = document.getElementById('lead-business').value;
+
+        const whatsappNumber = "5548988701886";
+        const whatsappMessage = encodeURIComponent(`Olá! Tenho interesse em saber mais sobre a Laura IA.\n\n*Nome:* ${name}\n*Telefone:* ${phone}\n*Nome do Negócio:* ${business}`);
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+
+        window.open(whatsappUrl, '_blank');
+        closeContactModal();
+        contactForm.reset();
+    });
+
 
     // --- Lógica de Geração de Posts ---
     function renderPosts(posts) {
         loadingSpinner.style.display = 'none';
         postGrid.innerHTML = ''; 
-        postsCache.push(...posts); // Adiciona ao cache
         posts.forEach(post => {
             const postElement = document.createElement('div');
             postElement.className = 'bg-custom-dark-blue-light rounded-2xl overflow-hidden group shadow-lg flex flex-col';
@@ -237,7 +301,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <button class="read-more-btn font-bold text-white hover:text-custom-gold transition-colors self-start">Ler mais &rarr;</button>
                 </div>
             `;
-            postElement.querySelector('.read-more-btn').addEventListener('click', () => openModal(post));
+            postElement.querySelector('.read-more-btn').addEventListener('click', () => openPostModal(post));
             postGrid.appendChild(postElement);
         });
     }
@@ -247,64 +311,47 @@ document.addEventListener('DOMContentLoaded', async () => {
         postGrid.innerHTML = `<div class="col-span-full text-center text-red-400 text-lg">${message}</div>`;
     }
 
-    async function generateBlogPosts() {
-        const apiKey = "";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-        const systemPrompt = `Você é um especialista em SEO e redator de conteúdo para "Laura IA", uma empresa que vende assistentes virtuais de IA para PMEs. Seu público são donos de negócios (barbearias, e-commerces, etc.). Crie artigos de blog completos, com mais de 1000 palavras, otimizados para SEO, com uma estrutura clara (H2, H3, parágrafos, listas) e em formato HTML. O conteúdo deve ser prático, informativo e direto.`;
-        const userQuery = `Gere 6 artigos de blog. Para cada um, forneça: uma 'category' (Gestão, Marketing e Vendas, Tecnologia e IA, ou Cases de Sucesso), um 'title' criativo, um 'fullContent' (o artigo completo em HTML com +1000 palavras, otimizado para a palavra-chave do título, usando tags <h2>, <h3>, <p>, <ul>, <li>), e 2 ou 3 'imageKeywords' em inglês, separadas por vírgula, para buscar uma imagem (ex: 'ecommerce,automation,sales').`;
-
-        const schema = {
-            type: "ARRAY",
-            items: {
-                type: "OBJECT",
-                properties: {
-                    category: { type: "STRING" },
-                    title: { type: "STRING" },
-                    fullContent: { type: "STRING" },
-                    imageKeywords: { type: "STRING" }
-                },
-                required: ["category", "title", "fullContent", "imageKeywords"]
-            }
-        };
-        
-        const payload = {
-            contents: [{ parts: [{ text: userQuery }] }],
-            systemInstruction: { parts: [{ text: systemPrompt }] },
-            generationConfig: {
-                responseMimeType: "application/json",
-                responseSchema: schema
-            }
-        };
-
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const errorBody = await response.text();
-                throw new Error(`Erro na API: ${response.status} ${response.statusText} - ${errorBody}`);
-            }
-
-            const result = await response.json();
-            const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-            
-            if (jsonText) {
-                const posts = JSON.parse(jsonText);
-                renderPosts(posts);
-            } else {
-                throw new Error("A resposta da API não contém o conteúdo esperado.");
-            }
-        } catch (error) {
-            console.error('Falha ao gerar conteúdo do blog:', error);
-            renderError('Desculpe, não foi possível carregar os posts no momento. Tente novamente mais tarde.');
+    // Conteúdo estático do blog
+    const staticPosts = [
+        {
+            category: "Marketing e Vendas",
+            title: "5 Campanhas de WhatsApp que sua Barbearia Precisa para Lotar a Agenda",
+            fullContent: "<h2>Introdução</h2><p>O WhatsApp se tornou a principal ferramenta de comunicação direta com clientes. Para barbearias, isso representa uma oportunidade de ouro para criar um relacionamento próximo e, claro, aumentar o faturamento. Neste artigo, vamos detalhar 5 campanhas práticas que você pode implementar hoje mesmo para manter sua agenda cheia e seus clientes fiéis, tudo isso de forma automatizada com uma IA como a Laura.</p><h3>1. Campanha de Reativação de Clientes 'Sumidos'</h3><p>Muitos clientes deixam de voltar não por insatisfação, mas por simples esquecimento. A Laura IA pode identificar clientes inativos há mais de 45 dias e enviar uma mensagem pessoal e amigável, oferecendo um pequeno incentivo para o retorno, como 15% de desconto. Isso recupera clientes que você considerava perdidos.</p><h3>2. Lembretes de Agendamento Inteligentes</h3><p>Reduzir a taxa de 'no-show' (clientes que agendam e não aparecem) é crucial. A Laura envia lembretes automáticos 24 horas antes do horário, com botões de 'Confirmar' ou 'Reagendar'. Isso não só diminui as faltas em até 80%, como também abre a vaga na agenda em tempo hábil para outro cliente.</p><h3>3. Upsell de Serviços no Agendamento</h3><p>Aumente seu ticket médio antes mesmo de o cliente chegar. Quando um cliente agenda um corte de cabelo, a Laura pode perguntar de forma inteligente: 'Ótima escolha! Gostaria de adicionar um serviço de barba com um desconto especial de R$10?'. Essa pequena oferta pode aumentar seu faturamento mensal significativamente.</p><h3>4. Clube de Fidelidade Digital</h3><p>Esqueça os cartões de papel. Crie um clube de fidelidade onde a cada 10 cortes, o 11º é grátis. A Laura gerencia os pontos automaticamente, notificando o cliente sobre seu progresso. Isso incentiva a recorrência e cria uma sensação de recompensa.</p><h3>5. Pesquisa de Satisfação e Avaliação no Google</h3><p>Após o serviço, a Laura envia uma rápida pesquisa de satisfação. Se a avaliação for positiva, ela automaticamente agradece e envia o link para o cliente deixar um review no Google. Isso constrói sua reputação online e atrai novos clientes organicamente.</p>",
+            imageKeywords: "barbershop,whatsapp,marketing"
+        },
+        {
+            category: "Tecnologia e IA",
+            title: "Como a Inteligência Artificial está Revolucionando o Atendimento em E-commerces",
+            fullContent: "<h2>O Futuro Chegou</h2><p>O atendimento ao cliente em e-commerces sempre foi um desafio: caro, demorado e difícil de escalar. A Inteligência Artificial generativa, como a utilizada pela Laura, está mudando esse cenário. Um agente de IA não é apenas um chatbot que responde a perguntas básicas; é um vendedor virtual, um especialista em produtos e um assistente de pós-venda, tudo ao mesmo tempo e disponível 24/7.</p><h3>Qualificação de Leads em Tempo Real</h3><p>Quando um visitante chega ao seu site, a Laura pode iniciar uma conversa proativa, entender as necessidades do cliente e guiá-lo até o produto certo. Ela pode tirar dúvidas sobre especificações técnicas, comparar modelos e até mesmo oferecer cupons de desconto para novos clientes, aumentando drasticamente a taxa de conversão.</p><h3>Recuperação de Carrinhos Abandonados</h3><p>A Laura IA pode se integrar ao seu sistema para identificar carrinhos abandonados. Minutos após o cliente sair do site, ela pode enviar uma mensagem no WhatsApp: 'Olá! Notei que você se interessou pelo produto X, mas não finalizou a compra. Posso ajudar com alguma dúvida ou oferecer um frete grátis para você fechar o pedido?'. Essa abordagem pessoal recupera vendas que seriam perdidas.</p><h3>Suporte Pós-Venda Automatizado</h3><p>Dúvidas sobre o status do pedido, rastreamento de entrega ou política de trocas podem ser totalmente gerenciadas pela IA, liberando sua equipe humana para focar em casos mais complexos. Isso garante uma experiência do cliente positiva e reduz custos operacionais.</p>",
+            imageKeywords: "ecommerce,ai,customer,service"
+        },
+        {
+            category: "Gestão",
+            title: "Menos Tempo no Telefone, Mais Tempo Gerindo: O Guia para Automatizar sua Imobiliária",
+            fullContent: "<h2>O gargalo do atendimento</h2><p>Corretores de imóveis perdem horas preciosas todos os dias respondendo às mesmas perguntas de dezenas de leads: 'Esse imóvel ainda está disponível?', 'Qual o valor do condomínio?', 'Podemos agendar uma visita?'. A Laura IA foi projetada para ser a triagem perfeita, qualificando leads 24 horas por dia e entregando para sua equipe apenas os contatos mais quentes e prontos para a próxima etapa.</p><h3>Filtro Inteligente de Leads</h3><p>A Laura pode ser treinada com as informações de todos os seus imóveis. Quando um lead entra em contato, ela faz as perguntas-chave: Qual o seu orçamento? Quantos quartos você precisa? Qual a região de preferência? Com base nas respostas, ela apresenta os imóveis mais adequados do seu portfólio.</p><h3>Agendamento de Visitas Automático</h3><p>Após encontrar o imóvel ideal, a Laura pode se integrar à agenda dos seus corretores e oferecer os horários disponíveis para visita, realizando o agendamento completo sem qualquer intervenção humana. O corretor apenas recebe a notificação do compromisso em seu calendário.</p>",
+            imageKeywords: "real,estate,automation,management"
+        },
+        {
+            category: "Cases de Sucesso",
+            title: "Case de Sucesso: Como a Barbearia Império VIP Aumentou em 30% a Recorrência de Clientes",
+            fullContent: "<p>A Barbearia Império VIP enfrentava um desafio comum: clientes fiéis, mas com uma frequência de retorno irregular. A implementação da Laura IA mudou o jogo. Com a ativação do Clube de Fidelidade digital e das campanhas de reativação automáticas, a barbearia viu um aumento de 30% na recorrência dos clientes em apenas 3 meses. Além disso, a automação do agendamento liberou os barbeiros para focarem exclusivamente nos clientes, melhorando a qualidade do serviço e a satisfação geral.</p>",
+            imageKeywords: "success,case,study,business"
+        },
+        {
+            category: "Marketing e Vendas",
+            title: "Upsell e Cross-sell: Como Usar a IA para Aumentar seu Ticket Médio",
+            fullContent: "<p>Vender mais para o mesmo cliente é a forma mais inteligente de crescer. A Laura IA pode ser configurada para identificar oportunidades de upsell (oferecer um produto melhor e mais caro) e cross-sell (oferecer produtos complementares) durante a jornada de compra. Por exemplo, se um cliente de e-commerce adiciona um celular ao carrinho, a Laura pode sugerir: 'Ótima escolha! Clientes que compraram este modelo também levaram uma capa de proteção e uma película de vidro com 20% de desconto no combo. Deseja adicionar?'. Essa estratégia simples pode aumentar o valor de cada venda de forma consistente.</p>",
+            imageKeywords: "sales,strategy,money"
+        },
+        {
+            category: "Tecnologia e IA",
+            title: "O que é Análise de Sentimento e Como Ela Pode Salvar um Cliente Insatisfeito?",
+            fullContent: "<p>A Laura IA não apenas entende o que o cliente escreve, mas também como ele se sente. Através da análise de sentimento, a IA consegue identificar palavras-chave e tons de frustração ou insatisfação em uma conversa. Ao detetar um cliente potencialmente irritado, a Laura pode automaticamente escalar o atendimento para um gerente humano, enviando uma notificação de 'cliente em risco'. Isso permite uma intervenção rápida para reverter a situação, transformando uma experiência negativa em uma oportunidade de encantar e fidelizar o cliente.</p>",
+            imageKeywords: "technology,sentiment,analysis,ai"
         }
-    }
+    ];
 
-    generateBlogPosts();
+    renderPosts(staticPosts);
 });
 </script>
 
