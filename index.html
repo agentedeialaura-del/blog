@@ -201,6 +201,14 @@
             <div class="px-6 pb-8">
                 <img id="modal-img" src="" alt="Imagem do post" class="w-full h-64 object-cover rounded-lg mb-6">
                 <div id="modal-article-content" class="text-gray-300 leading-relaxed"></div>
+                
+                <!-- Botões de Compartilhamento -->
+                <div class="border-t border-gray-700 mt-8 pt-6">
+                    <h3 class="text-lg font-bold text-white mb-4 text-center">Compartilhe este artigo!</h3>
+                    <div id="share-buttons-container" class="flex justify-center items-center gap-4">
+                        <!-- Botões serão inseridos dinamicamente aqui -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -240,12 +248,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     const postModalContent = postModal.querySelector('.modal-content');
     const closePostModalBtn = document.getElementById('close-modal-btn');
 
+    function slugify(text) {
+        return text.toString().toLowerCase()
+            .replace(/\s+/g, '-')           // Replace spaces with -
+            .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+            .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+            .replace(/^-+/, '')             // Trim - from start of text
+            .replace(/-+$/, '');            // Trim - from end of text
+    }
+
     function openPostModal(post) {
         document.getElementById('modal-img').src = post.imageUrl;
         document.getElementById('modal-img').alt = `Imagem para o post: ${post.title}`;
         document.getElementById('modal-category').textContent = post.category.toUpperCase();
         document.getElementById('modal-title').textContent = post.title;
         document.getElementById('modal-article-content').innerHTML = post.fullContent;
+
+        // Lógica de Compartilhamento
+        const shareButtonsContainer = document.getElementById('share-buttons-container');
+        const postSlug = slugify(post.title);
+        const postUrl = `https://blog.laura-ia.com.br/#post-${postSlug}`;
+        const encodedUrl = encodeURIComponent(postUrl);
+        const encodedTitle = encodeURIComponent(`Confira este artigo da Laura IA: "${post.title}"`);
+
+        shareButtonsContainer.innerHTML = `
+            <a href="https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}" target="_blank" class="p-3 bg-gray-700 rounded-full hover:bg-green-500 hover:text-white transition-colors"><i data-feather="message-circle" class="w-5 h-5"></i></a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" class="p-3 bg-gray-700 rounded-full hover:bg-blue-600 hover:text-white transition-colors"><i data-feather="facebook" class="w-5 h-5"></i></a>
+            <a href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}" target="_blank" class="p-3 bg-gray-700 rounded-full hover:bg-blue-400 hover:text-white transition-colors"><i data-feather="twitter" class="w-5 h-5"></i></a>
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=${encodedTitle}" target="_blank" class="p-3 bg-gray-700 rounded-full hover:bg-blue-700 hover:text-white transition-colors"><i data-feather="linkedin" class="w-5 h-5"></i></a>
+        `;
+        feather.replace(); // Renderiza os novos ícones
         
         postModal.classList.remove('hidden-modal');
         setTimeout(() => {
